@@ -1,0 +1,179 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    private int id;
+    private String name;
+    private int age;
+    private String course;
+
+    public Student(int id, String name, int age, String course) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.course = course;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    @Override
+    public String toString() {
+        return "Student [ID=" + id + ", Name=" + name + ", Age=" + age + ", Course=" + course + "]";
+    }
+}
+
+public class StudentManagementSystem {
+    private static ArrayList<Student> studentList = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n--- Student Management System ---");
+            System.out.println("1. Add Student");
+            System.out.println("2. Display All Students");
+            System.out.println("3. Remove Student");
+            System.out.println("4. Update Student");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    displayAllStudents();
+                    break;
+                case 3:
+                    removeStudent();
+                    break;
+                case 4:
+                    updateStudent();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid choice! Please choose again.");
+            }
+        }
+    }
+
+    // Add a student to the list
+    private static void addStudent() {
+        System.out.print("Enter Student ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();  // consume newline
+
+        System.out.print("Enter Student Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter Student Age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine();  // consume newline
+
+        System.out.print("Enter Course: ");
+        String course = scanner.nextLine();
+
+        Student student = new Student(id, name, age, course);
+        studentList.add(student);
+
+        System.out.println("Student added successfully!");
+    }
+
+    // Display all students in the list
+    private static void displayAllStudents() {
+        if (studentList.isEmpty()) {
+            System.out.println("No students available.");
+        } else {
+            for (Student student : studentList) {
+                System.out.println(student);
+            }
+        }
+    }
+
+    // Remove a student from the list
+    private static void removeStudent() {
+        System.out.print("Enter Student ID to remove: ");
+        int id = scanner.nextInt();
+        boolean found = false;
+
+        for (Student student : studentList) {
+            if (student.getId() == id) {
+                studentList.remove(student);
+                System.out.println("Student removed successfully!");
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Student with ID " + id + " not found.");
+        }
+    }
+
+    // Update a student's information
+    private static void updateStudent() {
+        System.out.print("Enter Student ID to update: ");
+        int id = scanner.nextInt();
+        boolean found = false;
+
+        for (Student student : studentList) {
+            if (student.getId() == id) {
+                scanner.nextLine(); // consume newline
+                System.out.print("Enter new name (leave blank to keep unchanged): ");
+                String newName = scanner.nextLine();
+                if (!newName.isEmpty()) {
+                    student.setName(newName);
+                }
+
+                System.out.print("Enter new age (0 to keep unchanged): ");
+                int newAge = scanner.nextInt();
+                if (newAge != 0) {
+                    student.setAge(newAge);
+                }
+
+                scanner.nextLine(); // consume newline
+                System.out.print("Enter new course (leave blank to keep unchanged): ");
+                String newCourse = scanner.nextLine();
+                if (!newCourse.isEmpty()) {
+                    student.setCourse(newCourse);
+                }
+
+                System.out.println("Student updated successfully!");
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Student with ID " + id + " not found.");
+        }
+    }
+}
